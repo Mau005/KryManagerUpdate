@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os/exec"
 	"time"
+
+	"github.com/Mau005/pkg/server"
 )
 
 var appName = "KrayManagerUpdate"
@@ -16,8 +18,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func NewServerWeb() {
-	http.HandleFunc("/", handler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	s := server.New()
+	log.Fatal(http.ListenAndServe(":8080", s.Router))
 }
 
 func WelComeTerminal() {
@@ -37,6 +39,7 @@ func WelComeTerminal() {
 	Created by Mau
 	`
 	fmt.Printf(welcome, appName, version, "\n")
+	NewServerWeb()
 }
 
 func ExecuteServer() {
