@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/Mau005/pkg/server"
+	"github.com/Mau005/KryManagerUpdate/pkg/server"
 )
 
 var appName = "KrayManagerUpdate"
