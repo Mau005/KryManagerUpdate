@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os/exec"
+	"time"
 )
 
 var appName = "KrayManagerUpdate"
@@ -38,14 +39,21 @@ func WelComeTerminal() {
 	fmt.Printf(welcome, appName, version, "\n")
 }
 
-func main() {
-	WelComeTerminal()
+func ExecuteServer() {
 	var path string
 	path = "data/Server/theforgottenserver-x64.exe"
-	out, err := exec.Command(path).Output()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(string(out))
+
+	go func() {
+		out, err := exec.Command(path).Output()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(string(out))
+	}()
+	time.Sleep(10 * time.Second)
+}
+
+func main() {
+	WelComeTerminal()
 
 }
