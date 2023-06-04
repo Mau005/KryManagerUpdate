@@ -18,7 +18,7 @@ type Server interface {
 	Router() http.Handler
 }
 
-func NewServer() Server {
+func New() Server {
 	a := &api{}
 	r := mux.NewRouter()
 	a.router = r
