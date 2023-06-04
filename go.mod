@@ -1,4 +1,4 @@
-module github.com/Mau005/KrayManagerUpdate
+module github.com/Mau005/KryManagerUpdate
 
 go 1.20
 

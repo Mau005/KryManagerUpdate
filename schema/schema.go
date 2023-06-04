@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/Mau005/KrayManagerUpdate/tools"
+	"github.com/Mau005/KryManagerUpdate/tools"
 	_ "github.com/go-sql-driver/mysql"
 )
 
