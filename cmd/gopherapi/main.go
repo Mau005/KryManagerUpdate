@@ -19,7 +19,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func NewServerWeb() {
 	s := server.New()
-	log.Fatal(http.ListenAndServe(":8080", s.Router))
+	log.Fatal(http.ListenAndServe(":8080", s.Router()))
 }
 
 func WelComeTerminal() {
