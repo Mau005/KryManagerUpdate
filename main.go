@@ -14,15 +14,15 @@ var appName = "KrayManagerUpdate"
 var version = "1.0"
 
 func NewServerWeb() {
-	db.DBConnection()
-	db.DB.AutoMigrate(models.Task{})
-	db.DB.AutoMigrate(models.User{})
+	db.ConnectionMysql()
+	//db.DB.AutoMigrate(models.Task{})
+	db.DB.AutoMigrate(models.Accounts{})
 	r := mux.NewRouter()
 	r.HandleFunc("/", routes.HomeHandler)
-	r.HandleFunc("/users", routes.GetUsersHandler).Methods("GET")
-	r.HandleFunc("/users/{id}", routes.GetUserHandler).Methods("GET")
-	r.HandleFunc("/users", routes.PostUserHandler).Methods("POST")
-	r.HandleFunc("/users/{id}", routes.DeleteUserHandler).Methods("DELETE")
+	r.HandleFunc("/accounts", routes.GetAccountsHandler).Methods("GET")
+	r.HandleFunc("/account/{id}", routes.GetAccountHandler).Methods("GET")
+	r.HandleFunc("/account", routes.PostAccountHandler).Methods("POST")
+	r.HandleFunc("/account/{id}", routes.DeleteAccountHandler).Methods("DELETE")
 
 	//taks
 	r.HandleFunc("/tasks", routes.GetTasksHandler).Methods("GET")
@@ -30,7 +30,7 @@ func NewServerWeb() {
 	r.HandleFunc("/tasks/{id}", routes.DeleteTaskHandler).Methods("DELETE")
 	r.HandleFunc("/tasks", routes.CreateTasksHandler).Methods("POST")
 
-	http.ListenAndServe(":8000", r)
+	http.ListenAndServe("192.168.80.1:8000", r)
 }
 func WelComeTerminal() {
 	var welcome string

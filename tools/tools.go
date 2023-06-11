@@ -14,7 +14,6 @@ func OpenJson(path string) map[string]interface{} {
 	var f interface{}
 	json.Unmarshal(archive, &f)
 	return f.(map[string]interface{})
-
 }
 
 func ConvertString(list_interface map[string]interface{}, key_value string) map[string]string {

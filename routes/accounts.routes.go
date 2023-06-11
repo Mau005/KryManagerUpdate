@@ -9,29 +9,29 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func GetUsersHandler(w http.ResponseWriter, r *http.Request) {
-	var users []models.User
-	db.DB.Find(&users)
-	json.NewEncoder(w).Encode(&users)
+func GetAccountsHandler(w http.ResponseWriter, r *http.Request) {
+	var account []models.Accounts
+	db.DB.Find(&account)
+	json.NewEncoder(w).Encode(&account)
 }
 
-func GetUserHandler(w http.ResponseWriter, r *http.Request) {
-	var user models.User
+func GetAccountHandler(w http.ResponseWriter, r *http.Request) {
+	var account models.Accounts
 	params := mux.Vars(r)
-	db.DB.First(&user, params["id"])
+	db.DB.First(&account, params["id"])
 
-	if user.ID == 0 {
+	if account.ID == 0 {
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte("User Not Found"))
 		return
 	}
-	db.DB.Model(&user).Association("Tasks").Find(&user.Tasks)
-	json.NewEncoder(w).Encode(&user)
+	db.DB.Model(&account).Association("Tasks").Find(&account.ID)
+	json.NewEncoder(w).Encode(&account)
 
 }
 
-func PostUserHandler(w http.ResponseWriter, r *http.Request) {
-	var user models.User
+func PostAccountHandler(w http.ResponseWriter, r *http.Request) {
+	var user models.Accounts
 
 	json.NewDecoder(r.Body).Decode(&user) //son los datos que envia el cliente
 	createUser := db.DB.Create(&user)
@@ -43,8 +43,8 @@ func PostUserHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&user)
 }
 
-func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
-	var user models.User
+func DeleteAccountHandler(w http.ResponseWriter, r *http.Request) {
+	var user models.Accounts
 	params := mux.Vars(r)
 	db.DB.First(&user, params["id"])
 
