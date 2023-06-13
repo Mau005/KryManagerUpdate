@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"net/http"
 
+	controllers "github.com/Mau005/KryManagerUpdate/crontrollers"
 	"github.com/Mau005/KryManagerUpdate/db"
+	"github.com/Mau005/KryManagerUpdate/middleware"
 	"github.com/Mau005/KryManagerUpdate/models"
 	"github.com/Mau005/KryManagerUpdate/routes"
+	"github.com/Mau005/KryManagerUpdate/utils/auth"
 	"github.com/gorilla/mux"
 )
 
@@ -18,19 +21,25 @@ func NewServerWeb() {
 	//db.DB.AutoMigrate(models.Task{})
 	db.DB.AutoMigrate(models.Accounts{})
 	r := mux.NewRouter()
+	r.Use(middleware.CommonMiddleware)
 	r.HandleFunc("/", routes.HomeHandler)
-	r.HandleFunc("/accounts", routes.GetAccountsHandler).Methods("GET")
-	r.HandleFunc("/account/{id}", routes.GetAccountHandler).Methods("GET")
-	r.HandleFunc("/account", routes.PostAccountHandler).Methods("POST")
-	r.HandleFunc("/account/{id}", routes.DeleteAccountHandler).Methods("DELETE")
+	r.HandleFunc("/login", controllers.Login).Methods("POST")
+
+	s := r.PathPrefix("/auth").Subrouter()
+	s.Use(auth.JwtVerify)
+	s.HandleFunc("/admin", routes.AdminHandler)
+	s.HandleFunc("/accounts", routes.GetAccountsHandler).Methods("GET")
+	s.HandleFunc("/account/{id}", routes.GetAccountHandler).Methods("GET")
+	s.HandleFunc("/account", routes.PostAccountHandler).Methods("POST")
+	s.HandleFunc("/account/{id}", routes.DeleteAccountHandler).Methods("DELETE")
 
 	//taks
-	r.HandleFunc("/tasks", routes.GetTasksHandler).Methods("GET")
-	r.HandleFunc("/tasks/{id}", routes.GetTaskHandler).Methods("GET")
-	r.HandleFunc("/tasks/{id}", routes.DeleteTaskHandler).Methods("DELETE")
-	r.HandleFunc("/tasks", routes.CreateTasksHandler).Methods("POST")
+	s.HandleFunc("/tasks", routes.GetTasksHandler).Methods("GET")
+	s.HandleFunc("/tasks/{id}", routes.GetTaskHandler).Methods("GET")
+	s.HandleFunc("/tasks/{id}", routes.DeleteTaskHandler).Methods("DELETE")
+	s.HandleFunc("/tasks", routes.CreateTasksHandler).Methods("POST")
 
-	http.ListenAndServe("192.168.80.1:8000", r)
+	http.ListenAndServe(":8000", r)
 }
 func WelComeTerminal() {
 	var welcome string
